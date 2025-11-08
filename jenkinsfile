@@ -2,40 +2,25 @@ pipeline {
     agent any
 
     stages {
-        stage('Pull Code') {
+        stage('pull') {
             steps {
-                git branch: 'master', url: 'https://github.com/iamtruptimane/pythonapp.git'
+                git branch: 'master', url: 'https://github.com/iamtruptimane/student-app.git'
             }
         }
-
-        stage('Build') {
+        stage('build') {
             steps {
-                echo '🛠️ Building Node.js application...'
-                sh 'npm install'
+                echo 'build-job'
             }
         }
-
-        stage('Test') {
+        stage('test') {
             steps {
-                echo '🧪 Running tests...'
-                sh 'npm test || echo "No test script defined"'
+                echo 'test-job'
             }
         }
-
-        stage('Deploy') {
+        stage('deploy') {
             steps {
-                echo '🚀 Deploying application...'
-                sh 'pm2 restart app || pm2 start app.js --name node-cicd'
+                echo 'deploy-job'
             }
-        }
-    }
-
-    post {
-        success {
-            echo '✅ Pipeline executed successfully!'
-        }
-        failure {
-            echo '❌ Pipeline failed — check logs for errors.'
         }
     }
 }
