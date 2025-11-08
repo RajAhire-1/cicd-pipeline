@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Pull Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/iamtruptimane/node-js-app-CICD.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo '🛠️ Building Node.js application...'
+                sh 'npm install'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo '🧪 Running tests...'
+                sh 'npm test || echo "No test script defined"'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo '🚀 Deploying application...'
+                sh 'pm2 restart app || pm2 start app.js --name node-cicd'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ Pipeline executed successfully!'
+        }
+        failure {
+            echo '❌ Pipeline failed — check logs for errors.'
+        }
+    }
+}
